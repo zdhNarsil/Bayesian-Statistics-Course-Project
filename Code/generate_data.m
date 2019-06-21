@@ -1,5 +1,12 @@
 function [data] = generate_data(k, d, T, type)
-    
+
+% k: number of arms
+% d: number of features
+% T: number of periods
+% type: 0: simulated data
+%       1: shuttle data
+%       2: covtype data
+
 if type == 0
     omega = mvnrnd(zeros(1, d), d * eye(d), k);
     omega(1, :) = zeros(1, d);
@@ -22,10 +29,13 @@ if type == 0
 end
 
 if type == 1
-    d = importdata('covtype.csv');
+    d = importdata('shuttle.csv');
     d = d.data;
+    d = [ones(length(d), 1), d];
+    T = min(T, length(d));
     p = T/length(d);
     lab = d(:, end);
+    rng(11);
     row = cvpartition(lab, 'HoldOut', p);
     d = d(row.test, :);
     data.feature = d(:, 1:end-1)';
@@ -35,12 +45,12 @@ if type == 1
 end
 
 if type == 2
-    d = importdata('shuttle.csv');
+    d = importdata('covtype.csv');
     d = d.data;
-    T = min(T, length(d));
+    d = [ones(length(d), 1), d];
     p = T/length(d);
     lab = d(:, end);
-    rng(2);
+    rng(22);
     row = cvpartition(lab, 'HoldOut', p);
     d = d(row.test, :);
     data.feature = d(:, 1:end-1)';
@@ -48,6 +58,8 @@ if type == 2
     
     data.K = 7;
 end
+
+rng('default');
 
 end
 
