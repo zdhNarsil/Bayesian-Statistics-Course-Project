@@ -51,7 +51,7 @@ while true
 end
 
 x = 0.25 * x;
-fprintf("x = %3.2e, n = %d, total iter = %d. ",x,total.trials,total.iter);
+%fprintf("x = %3.2e, n = %d, total iter = %d. ",x,total.trials,total.iter);
 
 end
 
